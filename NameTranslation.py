@@ -73,9 +73,14 @@ def merge_color_with_alpha_images(bmp_dir, file_pairs):
         global save_imgs
         if save_imgs:
             cv2.imwrite(bmp_dir + color_filename[:-len(".bmp")] + ".png", img_BGRA)
+    return images
 
-def read_png_images(filenames):
-    pass
+def read_png_images(png_dir, filenames):
+    images = []
+    for filename in filenames:
+        img = load_cv_image(png_dir, filename, cv2.IMREAD_UNCHANGED)
+        images.append(img)
+    return images
 
 bmp_dir = sys.argv[1]
 png_dir = sys.argv[2]
@@ -93,4 +98,4 @@ print("Files found in BMP Directory:\n" + str(bmp_filenames))
 bmp_filename_pairs = find_bmp_pairs(bmp_filenames)
 
 bmp_images = merge_color_with_alpha_images(bmp_dir, bmp_filename_pairs)
-png_images = read_png_images(png_filenames)
+png_images = read_png_images(png_dir, png_filenames)

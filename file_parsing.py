@@ -4,7 +4,8 @@ def build_file_list(dir):
     result = []
     for root, directories, files in os.walk(dir):
         for file in files:
-            result.append(file)
+            if ".bmp" in file or ".png" in file:
+                result.append(file)
     return result
 
 def filter_color_bmps(filenames):

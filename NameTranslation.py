@@ -1,6 +1,8 @@
 import sys, cv2
 from file_parsing import *
 from image_loading import *
+from skimage.metrics import structural_similarity as ssim
+from operator import itemgetter
 
 if len(sys.argv) < 3:
     print("That ain't no good m8")
@@ -26,3 +28,16 @@ bmp_filename_pairs = find_bmp_pairs(bmp_filenames)
 
 bmp_images = merge_color_with_alpha_images(bmp_dir, bmp_filename_pairs, save_imgs)
 png_images = read_png_images(png_dir, png_filenames)
+
+ssim_mtx = []
+
+for bmp_file, bmp in bmp_images:
+    bmp_record = []
+    for png_file, png in png_images:
+        bmp_record.append((png_file, ssim(bmp, png, multichannel=True)))
+    ssim_mtx.append((bmp_file, bmp_record))
+
+print("Results:")
+for file, lists in ssim_mtx:
+    print(str(file), "-> " + str(max(lists,key=itemgetter(1))[0]))
+# print(ssim_mtx)

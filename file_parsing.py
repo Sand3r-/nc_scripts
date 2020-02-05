@@ -10,20 +10,20 @@ def build_file_list(dir):
 
 def filter_color_bmps(filenames):
     result = list(filter(lambda filename: "_c.bmp" in filename, filenames))
-    print("Filtered Color BMPs:")
-    print(result)
+    # print("Filtered Color BMPs:")
+    # print(result)
     return result
 
 def filter_alpha_bmps(filenames):
     result = list(filter(lambda filename: "_a.bmp" in filename, filenames))
-    print("Filtered Alpha BMPs:")
-    print(result)
+    # print("Filtered Alpha BMPs:")
+    # print(result)
     return result
 
 def color2alpha_filename(color_filename):
     result = color_filename.replace("_c.bmp", "_a.bmp")
-    print("Generated alpha name:")
-    print(result)
+    # print("Generated alpha name:")
+    # print(result)
     return result
 
 def append_pair_if_alpha_exists(result, color_filename, alpha_bmps):
@@ -44,6 +44,6 @@ def find_bmp_pairs(filenames):
     alpha_bmps = filter_alpha_bmps(filenames)
 
     result = create_bmp_pair_list(color_bmps, alpha_bmps)
-    print("Found color, alpha pairs:")
-    print(result)
+    # print("Found color, alpha pairs:")
+    # print(result)
     return result

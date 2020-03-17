@@ -18,6 +18,12 @@ if len(sys.argv) > 3:
     save_imgs = str2bool(sys.argv[3])
     print("Save images: " + str(save_imgs))
 
+if len(sys.argv) > 4:
+    out_dir = sys.argv[4]
+    print("Out Directory: " + out_dir)
+else:
+    out_dir = "output/"
+
 bmp_filenames = build_file_list(bmp_dir)
 bmp_filename_pairs = find_bmp_pairs(bmp_filenames)
-merge_color_with_alpha_and_save_if_transparent(bmp_dir, bmp_filename_pairs)
+merge_color_with_alpha_and_save_if_transparent(bmp_dir, bmp_filename_pairs, out_dir)

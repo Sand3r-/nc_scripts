@@ -1,4 +1,5 @@
 import os, cv2
+from shutil import copyfile
 
 def load_cv_image(bmp_dir, filename, cv_flag):
     path = os.path.join(bmp_dir, filename)
@@ -14,6 +15,7 @@ def get_combined_color_and_alpha(bmp_dir, color_filename, alpha_filename):
     image = cv2.flip(image, 0)
     return image
 
+
 def combine_if_transparent(bmp_dir, color_filename, alpha_filename):
     alpha_img = load_cv_image(bmp_dir, alpha_filename, cv2.IMREAD_GRAYSCALE)
     if cv2.countNonZero(alpha_img) == 0:
@@ -24,14 +26,19 @@ def combine_if_transparent(bmp_dir, color_filename, alpha_filename):
     image = cv2.merge((b_channel, g_channel, r_channel, 255 - alpha_img))
     return image
 
-def merge_color_with_alpha_and_save_if_transparent(bmp_dir, file_pairs):
+def merge_color_with_alpha_and_save_if_transparent(bmp_dir, file_pairs, out_dir):
     for color_filename, alpha_filename in file_pairs:
         image = combine_if_transparent(bmp_dir, color_filename, alpha_filename)
 
         if image is not None:
-            path = "output/" + color_filename[:-len(".bmp")] + ".rgb8a1.png"
+            path =  os.path.join(out_dir, color_filename[:-len(".bmp")] + ".rgb8a1.png")
             print("Saving " + path)
             cv2.imwrite(path, image)
+        else:
+            src_path = os.path.join(bmp_dir, color_filename)
+            dst_path = os.path.join(out_dir, color_filename)
+            print("Copying to " + dst_path)
+            copyfile(src_path, dst_path)
 
 def merge_color_with_alpha_images(bmp_dir, file_pairs, save_imgs):
     images = []

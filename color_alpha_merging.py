@@ -18,8 +18,8 @@ if len(sys.argv) > 3:
     save_imgs = str2bool(sys.argv[3])
     print("Save images: " + str(save_imgs))
 
-if len(sys.argv) > 4:
-    out_dir = sys.argv[4]
+if len(sys.argv) > 2:
+    out_dir = sys.argv[2]
     print("Out Directory: " + out_dir)
 else:
     out_dir = "output/"

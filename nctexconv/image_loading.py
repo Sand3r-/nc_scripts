@@ -26,7 +26,9 @@ def combine_if_transparent(bmp_dir, color_filename, alpha_filename):
     image = cv2.merge((b_channel, g_channel, r_channel, 255 - alpha_img))
     return image
 
-def merge_color_with_alpha_and_save_if_transparent(bmp_dir, file_pairs, out_dir):
+def merge_color_with_alpha_and_save_if_transparent(bmp_dir, file_pairs, out_dir, no_copy=False):
+    transparent_names = []
+    opaque_names = []
     for color_filename, alpha_filename in file_pairs:
         image = combine_if_transparent(bmp_dir, color_filename, alpha_filename)
 
@@ -34,11 +36,15 @@ def merge_color_with_alpha_and_save_if_transparent(bmp_dir, file_pairs, out_dir)
             path =  os.path.join(out_dir, color_filename[:-len(".bmp")] + ".rgb8a1.png")
             print("Saving " + path)
             cv2.imwrite(path, image)
-        else:
+            transparent_names.append(color_filename[:-len(".bmp")])
+        elif not no_copy:
             src_path = os.path.join(bmp_dir, color_filename)
             dst_path = os.path.join(out_dir, color_filename)
             print("Copying to " + dst_path)
             copyfile(src_path, dst_path)
+        if no_copy:
+            opaque_names.append(color_filename[:-len(".bmp")])
+    return transparent_names, opaque_names
 
 def merge_color_with_alpha_images(bmp_dir, file_pairs, save_imgs):
     images = []

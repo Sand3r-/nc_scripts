@@ -7,6 +7,7 @@ def save_cfg_path(path, cfg_entry_name, printed_name):
     if path:
         if not os.path.isabs(path):
             print("Provided " + printed_name + " is not absolute. Please provide an absolute path")
+            print(path)
             exit(-1)
         with open(cfg_path, "r") as f:
             config = json.load(f)
@@ -73,7 +74,7 @@ def convert_files(src_dir, out_dir, names, src_extension, dst_extension, format)
     for name in names:
         etc_args[1] = '\"' + os.path.join(src_dir, name + src_extension) + '\"'
         etc_args[2] = "-format " + format
-        etc_args[5] = "-output " + os.path.join(out_dir, name + dst_extension)
+        etc_args[5] = "-output " + '\"' + os.path.join(out_dir, name + dst_extension) + '\"'
         subprocess.run(" ".join(etc_args))
         print("Converted " + name + dst_extension)
 

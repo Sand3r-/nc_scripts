@@ -67,15 +67,23 @@ def create_pair_list(names):
     return result
 
 def convert_files(src_dir, out_dir, names, src_extension, dst_extension, format):
-    etc_args = [None] * 6
+    etc_args = [None] * 12
     etc_args[0] = "EtcTool.exe"
-    etc_args[3] = "-m 7"
-    etc_args[4] = "-effort 100"
+    etc_args[4] = "-m"
+    etc_args[5] = "7"
+    etc_args[6] = "-effort"
+    etc_args[7] = "100"
+    etc_args[8] = "-j"
+    etc_args[9] = "6"
     for name in names:
-        etc_args[1] = '\"' + os.path.join(src_dir, name + src_extension) + '\"'
-        etc_args[2] = "-format " + format
-        etc_args[5] = "-output " + '\"' + os.path.join(out_dir, name + dst_extension) + '\"'
-        subprocess.run(" ".join(etc_args))
+        etc_args[1] = os.path.join(src_dir, name + src_extension)
+        etc_args[2] = "-format"
+        etc_args[3] = format
+        etc_args[10] = "-output"
+        etc_args[11] = out_dir + "/" + name + dst_extension
+        result = subprocess.run(etc_args, shell=True, capture_output=True, universal_newlines=True)
+        print(result.stdout)
+        print(result.stderr)
         print("Converted " + name + dst_extension)
 
 def convert(vrml_path, out_dir, opaque_names, transparent_names):
